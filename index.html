@@ -9,12 +9,13 @@
     <meta property="og:title" content="CodeMarket - Your Coding Solutions">
     <meta property="og:description" content="India's top platform for Telegram bots, userbots, websites, apps, and coding services. Secure, reliable, and innovative.">
     <meta property="og:image" content="/logo.png">
-    <meta property="og:url" content="https://yourdomain.com">
+    <meta property="og:url" content="https://web-n01s.onrender.com">
     <meta property="og:site_name" content="CodeMarket">
     <meta name="twitter:card" content="summary_large_image">
     <meta name="twitter:title" content="CodeMarket - Your Coding Solutions">
     <meta name="twitter:description" content="India's top platform for Telegram bots, userbots, websites, apps, and coding services. Secure, reliable, and innovative.">
     <meta name="twitter:image" content="/logo.png">
+    <link rel="shortcut icon" href="/favicon.ico">
     <title>CodeMarket</title>
     <script src="https://cdn.jsdelivr.net/npm/vue@2/dist/vue.js"></script>
     <script src="https://cdn.jsdelivr.net/npm/three@0.132.2/build/three.min.js"></script>
@@ -33,13 +34,13 @@
                     <li class="nav-item"><a class="nav-link" href="#demos">Demos</a></li>
                     <li class="nav-item"><a class="nav-link" href="#contact">Contact</a></li>
                     <li v-if="isLoggedIn" class="nav-item"><a class="nav-link" @click="showReferral">Share & Earn</a></li>
-                    <li v-if="isLoggedIn && user.role === 'creator' && user.approved" class="nav-item"><a class="nav-link" href="#creator-panel">Creator Panel</a></li>
-                    <li v-if="isLoggedIn && user.role === 'admin'" class="nav-item"><a class="nav-link" href="#admin-panel">Admin Panel</a></li>
+                    <li v-if="isLoggedIn && [[ user.role ]] === 'creator' && [[ user.approved ]]" class="nav-item"><a class="nav-link" href="#creator-panel">Creator Panel</a></li>
+                    <li v-if="isLoggedIn && [[ user.role ]] === 'admin'" class="nav-item"><a class="nav-link" href="#admin-panel">Admin Panel</a></li>
                 </ul>
                 <ul class="navbar-nav">
                     <li v-if="!isLoggedIn" class="nav-item"><a class="nav-link" @click="showLogin = true">Login</a></li>
                     <li v-if="!isLoggedIn" class="nav-item"><a class="nav-link" @click="showSignup = true">Signup</a></li>
-                    <li v-if="isLoggedIn" class="nav-item"><a class="nav-link" @click="logout">Logout ({{ user.username }})</a></li>
+                    <li v-if="isLoggedIn" class="nav-item"><a class="nav-link" @click="logout">Logout ([[ user.username ]])</a></li>
                 </ul>
             </div>
         </nav>
@@ -95,10 +96,10 @@
                 <div v-for="product in products" :key="product.id" class="col-md-4 mb-3">
                     <div class="card">
                         <div class="card-body">
-                            <h5 class="card-title">{{ product.name }}</h5>
-                            <p class="card-text">{{ product.description }}</p>
-                            <p>Price: ${{ product.price }}</p>
-                            <p>Type: {{ product.type }}</p>
+                            <h5 class="card-title">[[ product.name ]]</h5>
+                            <p class="card-text">[[ product.description ]]</p>
+                            <p>Price: $[[ product.price ]]</p>
+                            <p>Type: [[ product.type ]]</p>
                             <a v-if="product.demo_url" :href="product.demo_url" class="btn btn-info" target="_blank">Demo</a>
                         </div>
                     </div>
@@ -128,7 +129,7 @@
                         <h5 class="modal-title">Share & Earn</h5>
                     </div>
                     <div class="modal-body">
-                        <p>Your Referral Link: <a :href="referralLink">{{ referralLink }}</a></p>
+                        <p>Your Referral Link: <a :href="referralLink">[[ referralLink ]]</a></p>
                     </div>
                     <div class="modal-footer">
                         <button class="btn btn-secondary" @click="showReferralModal = false">Close</button>
@@ -138,7 +139,7 @@
         </div>
 
         <!-- Creator Panel -->
-        <section v-if="isLoggedIn && user.role === 'creator' && user.approved" id="creator-panel" class="mt-4">
+        <section v-if="isLoggedIn && [[ user.role ]] === 'creator' && [[ user.approved ]]" id="creator-panel" class="mt-4">
             <h2>Creator Panel</h2>
             <form @submit.prevent="addProduct">
                 <input v-model="newProduct.name" class="form-control mb-2" placeholder="Name" required>
@@ -154,16 +155,16 @@
                 <input v-model="newProduct.demo_url" class="form-control mb-2" placeholder="Demo URL">
                 <button type="submit" class="btn btn-primary">Add Product</button>
             </form>
-            <button v-if="!user.approved" @click="requestCreator" class="btn btn-warning mt-2">Request Creator Approval</button>
+            <button v-if="! [[ user.approved ]]" @click="requestCreator" class="btn btn-warning mt-2">Request Creator Approval</button>
         </section>
 
         <!-- Admin Panel -->
-        <section v-if="isLoggedIn && user.role === 'admin'" id="admin-panel" class="mt-4">
+        <section v-if="isLoggedIn && [[ user.role ]] === 'admin'" id="admin-panel" class="mt-4">
             <h2>Admin Panel</h2>
             <h3>Users</h3>
             <div v-for="u in users" :key="u.id" class="card mb-2">
                 <div class="card-body">
-                    {{ u.username }} - Role: {{ u.role }} - Approved: {{ u.approved }}
+                    [[ u.username ]] - Role: [[ u.role ]] - Approved: [[ u.approved ]]
                     <button v-if="u.role === 'creator' && !u.approved" @click="approveCreator(u.id)" class="btn btn-success btn-sm">Approve</button>
                 </div>
             </div>
@@ -172,4 +173,4 @@
 
     <script src="/script.js"></script>
 </body>
-</html>
+    </html>
