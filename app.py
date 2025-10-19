@@ -8,7 +8,7 @@ import uuid
 import os
 
 app = Flask(__name__, template_folder='.')  # Set template folder to root directory
-app.config['SECRET_KEY'] = os.environ.get('SECRET_KEY', 'c0c78d70edc4268cd0bf114c825907d21258f8c2d85522af08b78a09a820b951)
+app.config['SECRET_KEY'] = os.environ.get('SECRET_KEY', 'c0c78d70edc4268cd0bf114c825907d21258f8c2d85522af08b78a09a820b951')
 app.config['SQLALCHEMY_DATABASE_URI'] = os.environ.get('DATABASE_URL', 'sqlite:///site.db').replace('postgres://', 'postgresql://')
 app.config['SQLALCHEMY_TRACK_MODIFICATIONS'] = False
 CORS(app)
