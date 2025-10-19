@@ -7,7 +7,7 @@ from werkzeug.security import generate_password_hash, check_password_hash
 import uuid
 import os
 
-app = Flask(__name__, template_folder='.')  # Set template folder to root directory
+app = Flask(__name__, template_folder='.')  # Templates in root directory
 app.config['SECRET_KEY'] = os.environ.get('SECRET_KEY', 'c0c78d70edc4268cd0bf114c825907d21258f8c2d85522af08b78a09a820b951')
 app.config['SQLALCHEMY_DATABASE_URI'] = os.environ.get('DATABASE_URL', 'sqlite:///site.db').replace('postgres://', 'postgresql://')
 app.config['SQLALCHEMY_TRACK_MODIFICATIONS'] = False
@@ -56,7 +56,7 @@ with app.app_context():
 # Routes
 @app.route('/')
 def index():
-    return render_template('index.html')
+    return render_template('index.html')  # No variables passed, Vue handles user data
 
 @app.route('/api/signup', methods=['POST'])
 def signup():
