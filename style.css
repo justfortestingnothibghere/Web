@@ -1,0 +1,45 @@
+body {
+    margin: 0;
+    overflow-x: hidden;
+    background: #0a0a0a;
+    color: #fff;
+}
+#threejs-bg {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    z-index: -1;
+}
+.content {
+    position: relative;
+    z-index: 1;
+    padding: 20px;
+}
+.navbar {
+    background: rgba(0, 0, 0, 0.8) !important;
+}
+.card {
+    background: rgba(255, 255, 255, 0.1);
+    border: none;
+    transition: transform 0.3s;
+}
+.card:hover {
+    transform: scale(1.05);
+}
+.modal-content {
+    background: rgba(0, 0, 0, 0.9);
+    color: #fff;
+}
+.btn-primary {
+    background-color: #00ff88;
+    border-color: #00ff88;
+}
+.btn-primary:hover {
+    background-color: #00cc66;
+    border-color: #00cc66;
+}
+section {
+    margin-bottom: 40px;
+}

@@ -1,0 +1,175 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width,initial-scale=1,maximum-scale=1,minimum-scale=1,viewport-fit=cover,user-scalable=no">
+    <meta name="description" content="India's top platform for Telegram bots, userbots, websites, apps, and coding services. Secure, reliable, and innovative.">
+    <meta name="keywords" content="Telegram bots, userbots, websites, apps, coding">
+    <meta property="og:title" content="CodeMarket - Your Coding Solutions">
+    <meta property="og:description" content="India's top platform for Telegram bots, userbots, websites, apps, and coding services. Secure, reliable, and innovative.">
+    <meta property="og:image" content="/logo.png">
+    <meta property="og:url" content="https://yourdomain.com">
+    <meta property="og:site_name" content="CodeMarket">
+    <meta name="twitter:card" content="summary_large_image">
+    <meta name="twitter:title" content="CodeMarket - Your Coding Solutions">
+    <meta name="twitter:description" content="India's top platform for Telegram bots, userbots, websites, apps, and coding services. Secure, reliable, and innovative.">
+    <meta name="twitter:image" content="/logo.png">
+    <title>CodeMarket</title>
+    <script src="https://cdn.jsdelivr.net/npm/vue@2/dist/vue.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/three@0.132.2/build/three.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/axios/dist/axios.min.js"></script>
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@4.6.0/dist/css/bootstrap.min.css">
+    <link rel="stylesheet" href="/style.css">
+</head>
+<body>
+    <div id="threejs-bg"></div>
+    <div id="app" class="content container">
+        <nav class="navbar navbar-expand-lg navbar-dark bg-dark">
+            <a class="navbar-brand" href="#">CodeMarket</a>
+            <div class="collapse navbar-collapse">
+                <ul class="navbar-nav mr-auto">
+                    <li class="nav-item"><a class="nav-link" href="#products">Products</a></li>
+                    <li class="nav-item"><a class="nav-link" href="#demos">Demos</a></li>
+                    <li class="nav-item"><a class="nav-link" href="#contact">Contact</a></li>
+                    <li v-if="isLoggedIn" class="nav-item"><a class="nav-link" @click="showReferral">Share & Earn</a></li>
+                    <li v-if="isLoggedIn && user.role === 'creator' && user.approved" class="nav-item"><a class="nav-link" href="#creator-panel">Creator Panel</a></li>
+                    <li v-if="isLoggedIn && user.role === 'admin'" class="nav-item"><a class="nav-link" href="#admin-panel">Admin Panel</a></li>
+                </ul>
+                <ul class="navbar-nav">
+                    <li v-if="!isLoggedIn" class="nav-item"><a class="nav-link" @click="showLogin = true">Login</a></li>
+                    <li v-if="!isLoggedIn" class="nav-item"><a class="nav-link" @click="showSignup = true">Signup</a></li>
+                    <li v-if="isLoggedIn" class="nav-item"><a class="nav-link" @click="logout">Logout ({{ user.username }})</a></li>
+                </ul>
+            </div>
+        </nav>
+
+        <!-- Login Modal -->
+        <div v-if="showLogin" class="modal fade show d-block" tabindex="-1">
+            <div class="modal-dialog">
+                <div class="modal-content">
+                    <form @submit.prevent="login">
+                        <div class="modal-header">
+                            <h5 class="modal-title">Login</h5>
+                        </div>
+                        <div class="modal-body">
+                            <input v-model="loginUsername" class="form-control mb-2" placeholder="Username" required>
+                            <input v-model="loginPassword" type="password" class="form-control mb-2" placeholder="Password" required>
+                        </div>
+                        <div class="modal-footer">
+                            <button type="submit" class="btn btn-primary">Login</button>
+                            <button type="button" class="btn btn-secondary" @click="showLogin = false">Close</button>
+                        </div>
+                    </form>
+                </div>
+            </div>
+        </div>
+
+        <!-- Signup Modal -->
+        <div v-if="showSignup" class="modal fade show d-block" tabindex="-1">
+            <div class="modal-dialog">
+                <div class="modal-content">
+                    <form @submit.prevent="signup">
+                        <div class="modal-header">
+                            <h5 class="modal-title">Signup</h5>
+                        </div>
+                        <div class="modal-body">
+                            <input v-model="signupUsername" class="form-control mb-2" placeholder="Username" required>
+                            <input v-model="signupEmail" class="form-control mb-2" placeholder="Email" type="email" required>
+                            <input v-model="signupPassword" type="password" class="form-control mb-2" placeholder="Password" required>
+                            <input v-model="referralCode" class="form-control mb-2" placeholder="Referral Code (optional)">
+                        </div>
+                        <div class="modal-footer">
+                            <button type="submit" class="btn btn-primary">Signup</button>
+                            <button type="button" class="btn btn-secondary" @click="showSignup = false">Close</button>
+                        </div>
+                    </form>
+                </div>
+            </div>
+        </div>
+
+        <!-- Products Section -->
+        <section id="products" class="mt-4">
+            <h2>Our Products</h2>
+            <div class="row">
+                <div v-for="product in products" :key="product.id" class="col-md-4 mb-3">
+                    <div class="card">
+                        <div class="card-body">
+                            <h5 class="card-title">{{ product.name }}</h5>
+                            <p class="card-text">{{ product.description }}</p>
+                            <p>Price: ${{ product.price }}</p>
+                            <p>Type: {{ product.type }}</p>
+                            <a v-if="product.demo_url" :href="product.demo_url" class="btn btn-info" target="_blank">Demo</a>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- Demos Section -->
+        <section id="demos" class="mt-4">
+            <h2>Demos</h2>
+            <p>Telegram Bot Demo: Contact <a href="https://t.me/MR_ARMAN_08" target="_blank">@MR_ARMAN_08</a> for a live demo.</p>
+            <p>Website Demo: <a href="https://example.com" target="_blank">Sample Website</a></p>
+        </section>
+
+        <!-- Contact Section -->
+        <section id="contact" class="mt-4">
+            <h2>Contact Us</h2>
+            <p>Phone: <a href="tel:+918011971924">+91 8011971924</a></p>
+            <p>Telegram: <a href="https://t.me/MR_ARMAN_08" target="_blank">@MR_ARMAN_08</a></p>
+        </section>
+
+        <!-- Referral Modal -->
+        <div v-if="showReferralModal" class="modal fade show d-block" tabindex="-1">
+            <div class="modal-dialog">
+                <div class="modal-content">
+                    <div class="modal-header">
+                        <h5 class="modal-title">Share & Earn</h5>
+                    </div>
+                    <div class="modal-body">
+                        <p>Your Referral Link: <a :href="referralLink">{{ referralLink }}</a></p>
+                    </div>
+                    <div class="modal-footer">
+                        <button class="btn btn-secondary" @click="showReferralModal = false">Close</button>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Creator Panel -->
+        <section v-if="isLoggedIn && user.role === 'creator' && user.approved" id="creator-panel" class="mt-4">
+            <h2>Creator Panel</h2>
+            <form @submit.prevent="addProduct">
+                <input v-model="newProduct.name" class="form-control mb-2" placeholder="Name" required>
+                <textarea v-model="newProduct.description" class="form-control mb-2" placeholder="Description" required></textarea>
+                <input v-model="newProduct.price" type="number" class="form-control mb-2" placeholder="Price" required>
+                <select v-model="newProduct.type" class="form-control mb-2">
+                    <option value="bot">Telegram Bot</option>
+                    <option value="userbot">Userbot</option>
+                    <option value="website">Website</option>
+                    <option value="app">App</option>
+                    <option value="coding">Coding</option>
+                </select>
+                <input v-model="newProduct.demo_url" class="form-control mb-2" placeholder="Demo URL">
+                <button type="submit" class="btn btn-primary">Add Product</button>
+            </form>
+            <button v-if="!user.approved" @click="requestCreator" class="btn btn-warning mt-2">Request Creator Approval</button>
+        </section>
+
+        <!-- Admin Panel -->
+        <section v-if="isLoggedIn && user.role === 'admin'" id="admin-panel" class="mt-4">
+            <h2>Admin Panel</h2>
+            <h3>Users</h3>
+            <div v-for="u in users" :key="u.id" class="card mb-2">
+                <div class="card-body">
+                    {{ u.username }} - Role: {{ u.role }} - Approved: {{ u.approved }}
+                    <button v-if="u.role === 'creator' && !u.approved" @click="approveCreator(u.id)" class="btn btn-success btn-sm">Approve</button>
+                </div>
+            </div>
+        </section>
+    </div>
+
+    <script src="/script.js"></script>
+</body>
+</html>
