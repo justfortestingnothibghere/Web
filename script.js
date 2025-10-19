@@ -29,6 +29,7 @@ window.addEventListener('resize', () => {
 // Vue App
 new Vue({
     el: '#app',
+    delimiters: ['[[', ']]'],  // Change Vue delimiters to avoid Jinja2 conflict
     data: {
         showLogin: false,
         showSignup: false,
